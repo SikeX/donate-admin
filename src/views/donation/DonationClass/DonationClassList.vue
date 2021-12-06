@@ -12,7 +12,7 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('捐赠项目')">导出</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('捐赠项目分类')">导出</a-button>
       <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
@@ -89,7 +89,7 @@
       </a-table>
     </div>
 
-    <donation-item-modal ref="modalForm" @ok="modalFormOk"></donation-item-modal>
+    <donation-class-modal ref="modalForm" @ok="modalFormOk"></donation-class-modal>
   </a-card>
 </template>
 
@@ -98,17 +98,17 @@
   import '@/assets/less/TableExpand.less'
   import { mixinDevice } from '@/utils/mixin'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-  import DonationItemModal from './modules/DonationItemModal'
+  import DonationClassModal from './modules/DonationClassModal'
 
   export default {
-    name: 'DonationItemList',
+    name: 'DonationClassList',
     mixins:[JeecgListMixin, mixinDevice],
     components: {
-      DonationItemModal
+      DonationClassModal
     },
     data () {
       return {
-        description: '捐赠项目管理页面',
+        description: '捐赠项目分类管理页面',
         // 表头
         columns: [
           {
@@ -122,52 +122,9 @@
             }
           },
           {
-            title:'项目图片',
+            title:'项目分类名称',
             align:"center",
-            dataIndex: 'donationPic'
-          },
-          {
-            title:'捐赠项目名称',
-            align:"center",
-            dataIndex: 'donationItemName'
-          },
-          {
-            title:'创建人',
-            align:"center",
-            dataIndex: 'createBy'
-          },
-          {
-            title:'创建日期',
-            align:"center",
-            dataIndex: 'createTime'
-          },
-          {
-            title:'项目状态',
-            align:"center",
-            dataIndex: 'status'
-          },
-          {
-            title:'所属部门',
-            align:"center",
-            dataIndex: 'sysOrgCode'
-          },
-          {
-            title:'目标金额',
-            align:"center",
-            dataIndex: 'targetMoney'
-          },
-          {
-            title:'已筹金额',
-            align:"center",
-            dataIndex: 'rasiedMoney'
-          },
-          {
-            title:'截止日期',
-            align:"center",
-            dataIndex: 'endTime',
-            customRender:function (text) {
-              return !text?"":(text.length>10?text.substr(0,10):text)
-            }
+            dataIndex: 'name'
           },
           {
             title: '操作',
@@ -179,11 +136,11 @@
           }
         ],
         url: {
-          list: "/item/donationItem/list",
-          delete: "/item/donationItem/delete",
-          deleteBatch: "/item/donationItem/deleteBatch",
-          exportXlsUrl: "/item/donationItem/exportXls",
-          importExcelUrl: "item/donationItem/importExcel",
+          list: "/donationClass/donationClass/list",
+          delete: "/donationClass/donationClass/delete",
+          deleteBatch: "/donationClass/donationClass/deleteBatch",
+          exportXlsUrl: "/donationClass/donationClass/exportXls",
+          importExcelUrl: "donationClass/donationClass/importExcel",
           
         },
         dictOptions:{},
@@ -203,16 +160,7 @@
       },
       getSuperFieldList(){
         let fieldList=[];
-        fieldList.push({type:'string',value:'donationPic',text:'项目图片',dictCode:''})
-        fieldList.push({type:'string',value:'donationItemName',text:'捐赠项目名称',dictCode:''})
-        fieldList.push({type:'string',value:'createBy',text:'创建人',dictCode:''})
-        fieldList.push({type:'datetime',value:'createTime',text:'创建日期'})
-        fieldList.push({type:'int',value:'status',text:'项目状态',dictCode:''})
-        fieldList.push({type:'string',value:'sysOrgCode',text:'所属部门',dictCode:''})
-        fieldList.push({type:'string',value:'donationItemDesc',text:'捐赠项目描述',dictCode:''})
-        fieldList.push({type:'string',value:'targetMoney',text:'目标金额',dictCode:''})
-        fieldList.push({type:'string',value:'rasiedMoney',text:'已筹金额',dictCode:''})
-        fieldList.push({type:'date',value:'endTime',text:'截止日期'})
+        fieldList.push({type:'string',value:'name',text:'项目分类名称',dictCode:''})
         this.superFieldList = fieldList
       }
     }

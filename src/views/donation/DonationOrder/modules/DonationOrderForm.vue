@@ -4,48 +4,43 @@
       <a-form-model ref="form" :model="model" :rules="validatorRules" slot="detail">
         <a-row>
           <a-col :span="24">
-            <a-form-model-item label="项目图片" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="donationPic">
-              <a-input v-model="model.donationPic" placeholder="请输入项目图片"  ></a-input>
+            <a-form-model-item label="订单编号" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="orderNo">
+              <a-input v-model="model.orderNo" placeholder="请输入订单编号"  ></a-input>
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
-            <a-form-model-item label="捐赠项目名称" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="donationItemName">
-              <a-input v-model="model.donationItemName" placeholder="请输入捐赠项目名称"  ></a-input>
+            <a-form-model-item label="第三方支付订单" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="thirdPayOrder">
+              <a-input v-model="model.thirdPayOrder" placeholder="请输入第三方支付订单"  ></a-input>
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
-            <a-form-model-item label="创建日期" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="createTime">
-              <j-date placeholder="请选择创建日期"  v-model="model.createTime" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" />
+            <a-form-model-item label="捐赠份数" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="piece">
+              <a-input v-model="model.piece" placeholder="请输入捐赠份数"  ></a-input>
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
-            <a-form-model-item label="项目状态" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="status">
-              <a-input-number v-model="model.status" placeholder="请输入项目状态" style="width: 100%" />
+            <a-form-model-item label="是否是自由捐" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="isFreeDonation">
+              <a-input-number v-model="model.isFreeDonation" placeholder="请输入是否是自由捐" style="width: 100%" />
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
-            <a-form-model-item label="所属部门" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="sysOrgCode">
-              <a-input v-model="model.sysOrgCode" placeholder="请输入所属部门"  ></a-input>
+            <a-form-model-item label="支付方式" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="payMethod">
+              <a-input v-model="model.payMethod" placeholder="请输入支付方式"  ></a-input>
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
-            <a-form-model-item label="捐赠项目描述" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="donationItemDesc">
-              <a-input v-model="model.donationItemDesc" placeholder="请输入捐赠项目描述"  ></a-input>
+            <a-form-model-item label="支付状态" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="status">
+              <a-input-number v-model="model.status" placeholder="请输入支付状态" style="width: 100%" />
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
-            <a-form-model-item label="目标金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="targetMoney">
-              <a-input v-model="model.targetMoney" placeholder="请输入目标金额"  ></a-input>
+            <a-form-model-item label="支付留言" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="message">
+              <a-input v-model="model.message" placeholder="请输入支付留言"  ></a-input>
             </a-form-model-item>
           </a-col>
           <a-col :span="24">
-            <a-form-model-item label="已筹金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="rasiedMoney">
-              <a-input v-model="model.rasiedMoney" placeholder="请输入已筹金额"  ></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-model-item label="截止日期" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="endTime">
-              <j-date placeholder="请选择截止日期" v-model="model.endTime"  style="width: 100%" />
+            <a-form-model-item label="捐赠总额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="money">
+              <a-input v-model="model.money" placeholder="请输入捐赠总额"  ></a-input>
             </a-form-model-item>
           </a-col>
         </a-row>
@@ -60,7 +55,7 @@
   import { validateDuplicateValue } from '@/utils/util'
 
   export default {
-    name: 'DonationItemForm',
+    name: 'DonationOrderForm',
     components: {
     },
     props: {
@@ -87,9 +82,9 @@
         validatorRules: {
         },
         url: {
-          add: "/item/donationItem/add",
-          edit: "/item/donationItem/edit",
-          queryById: "/item/donationItem/queryById"
+          add: "/donationOrder/donationOrder/add",
+          edit: "/donationOrder/donationOrder/edit",
+          queryById: "/donationOrder/donationOrder/queryById"
         }
       }
     },

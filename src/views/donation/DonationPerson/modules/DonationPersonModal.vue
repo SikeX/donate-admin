@@ -8,17 +8,17 @@
     :okButtonProps="{ class:{'jee-hidden': disableSubmit} }"
     @cancel="handleCancel"
     cancelText="关闭">
-    <donation-item-form ref="realForm" @ok="submitCallback" :disabled="disableSubmit"></donation-item-form>
+    <donation-person-form ref="realForm" @ok="submitCallback" :disabled="disableSubmit"></donation-person-form>
   </j-modal>
 </template>
 
 <script>
 
-  import DonationItemForm from './DonationItemForm'
+  import DonationPersonForm from './DonationPersonForm'
   export default {
-    name: 'DonationItemModal',
+    name: 'DonationPersonModal',
     components: {
-      DonationItemForm
+      DonationPersonForm
     },
     data () {
       return {
