@@ -34,11 +34,11 @@
               <j-dict-select-tag type="list" v-model="model.protocolClass" dictCode="protocol_class,name,id" placeholder="请选择协议项目分类" />
             </a-form-model-item>
           </a-col>
-          <a-col :span="24" >
+<!--          <a-col :span="24" >
             <a-form-model-item label="项目状态" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="status">
               <j-switch v-model="model.status"  ></j-switch>
             </a-form-model-item>
-          </a-col>
+          </a-col>-->
           <a-col :span="24" >
             <a-form-model-item label="项目类别" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="category">
               <j-dict-select-tag type="list" v-model="model.category" dictCode="donation_category" placeholder="请选择项目类别" />
