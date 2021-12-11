@@ -149,6 +149,27 @@
             dataIndex: 'category_dictText'
           },
           {
+            title:'上传附件',
+            align:"center",
+            dataIndex: 'description',
+            scopedSlots: {customRender: 'fileSlot'}
+          },
+          {
+            title:'项目到款情况',
+            align:"center",
+            dataIndex: 'getSituation_dictText'
+          },
+          {
+            title:'项目到账金额',
+            align:"center",
+            dataIndex: 'getMoney'
+          },
+          {
+            title:'项目到账时间',
+            align:"center",
+            dataIndex: 'getTime'
+          },
+          {
             title: '操作',
             dataIndex: 'action',
             align:"center",
@@ -190,6 +211,10 @@
          fieldList.push({type:'string',value:'protocolClass',text:'协议项目分类',dictCode:'protocol_class,name,id'})
          fieldList.push({type:'switch',value:'status',text:'项目状态'})
          fieldList.push({type:'int',value:'category',text:'项目类别',dictCode:'donation_category'})
+         fieldList.push({type:'string',value:'description',text:'上传附件',dictCode:''})
+         fieldList.push({type:'string',value:'getSituation',text:'项目到款情况',dictCode:'money_situation'})
+         fieldList.push({type:'int',value:'getMoney',text:'项目到账金额',dictCode:''})
+         fieldList.push({type:'datetime',value:'getTime',text:'项目到账时间'})
         this.superFieldList = fieldList
       }
     }

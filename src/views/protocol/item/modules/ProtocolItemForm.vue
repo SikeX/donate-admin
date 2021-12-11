@@ -34,14 +34,34 @@
               <j-dict-select-tag type="list" v-model="model.protocolClass" dictCode="protocol_class,name,id" placeholder="请选择协议项目分类" />
             </a-form-model-item>
           </a-col>
-          <a-col :span="24" >
+<!--          <a-col :span="24" >
             <a-form-model-item label="项目状态" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="status">
               <j-switch v-model="model.status"  ></j-switch>
             </a-form-model-item>
-          </a-col>
+          </a-col>-->
           <a-col :span="24" >
             <a-form-model-item label="项目类别" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="category">
               <j-dict-select-tag type="list" v-model="model.category" dictCode="donation_category" placeholder="请选择项目类别" />
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="24" >
+            <a-form-model-item label="上传附件" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="description">
+              <j-upload v-model="model.description"  ></j-upload>
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="24" >
+            <a-form-model-item label="项目到款情况" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="getSituation">
+              <j-dict-select-tag type="list" v-model="model.getSituation" dictCode="money_situation" placeholder="请选择项目到款情况" />
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="24" >
+            <a-form-model-item label="项目到账金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="getMoney">
+              <a-input-number v-model="model.getMoney" placeholder="请输入项目到账金额" style="width: 100%" />
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="24" >
+            <a-form-model-item label="项目到账时间" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="getTime">
+              <j-date placeholder="请选择项目到账时间" v-model="model.getTime" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" />
             </a-form-model-item>
           </a-col>
         </a-row>
