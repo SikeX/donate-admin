@@ -4,6 +4,34 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="捐赠项目分类">
+              <j-dict-select-tag placeholder="请选择捐赠项目分类" v-model="queryParam.donationClass" dictCode="donation_class,name,id"/>
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="项目状态">
+              <j-dict-select-tag placeholder="请选择项目状态" v-model="queryParam.status" 
+              dictCode="donation_status"/>
+            </a-form-item>
+          </a-col>
+          <template v-if="toggleSearchStatus">
+            <a-col :xl="6" :lg="7" :md="8" :sm="24">
+              <a-form-item label="项目类别">
+                <j-dict-select-tag placeholder="请选择项目类别" v-model="queryParam.category" dictCode="donation_category"/>
+              </a-form-item>
+            </a-col>
+          </template>
+          <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
+              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
+              <a @click="handleToggleSearch" style="margin-left: 8px">
+                {{ toggleSearchStatus ? '收起' : '展开' }}
+                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
+              </a>
+            </span>
+          </a-col>
         </a-row>
       </a-form>
     </div>
@@ -13,9 +41,9 @@
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('捐赠项目')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+      <!-- <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
-      </a-upload>
+      </a-upload> -->
       <!-- 高级查询区域 -->
       <j-super-query :fieldList="superFieldList" ref="superQueryModal" @handleSuperQuery="handleSuperQuery"></j-super-query>
       <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -44,7 +72,6 @@
         :dataSource="dataSource"
         :pagination="ipagination"
         :loading="loading"
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         @change="handleTableChange">
 
         <template slot="htmlSlot" slot-scope="text">
@@ -109,6 +136,7 @@
     data () {
       return {
         description: '捐赠项目管理页面',
+        roleId: [],
         // 表头
         columns: [
           {
@@ -122,6 +150,26 @@
             }
           },
           {
+            title:'项目名称',
+            align:"center",
+            dataIndex: 'name'
+          },
+          {
+            title:'捐赠项目分类',
+            align:"center",
+            dataIndex: 'donationClass_dictText'
+          },
+          {
+            title:'项目状态',
+            align:"center",
+            dataIndex: 'status_dictText'
+          },
+          {
+            title:'项目类别',
+            align:"center",
+            dataIndex: 'category_dictText'
+          },
+          {
             title:'创建人',
             align:"center",
             dataIndex: 'createBy'
@@ -132,9 +180,9 @@
             dataIndex: 'createTime'
           },
           {
-            title:'项目名称',
+            title:'所属部门',
             align:"center",
-            dataIndex: 'name'
+            dataIndex: 'sysOrgCode_dictText'
           },
           {
             title:'项目图片',
@@ -142,17 +190,7 @@
             dataIndex: 'picture',
             scopedSlots: {customRender: 'imgSlot'}
           },
-          {
-            title:'捐赠项目分类',
-            align:"center",
-            dataIndex: 'donationClass_dictText'
-          },
-          {
-            title:'项目状态',
-            align:"center",
-            dataIndex: 'status',
-            customRender: (text) => (!text ? "" : (text == "Y" ? "是" : "否"))
-          },
+          
           {
             title:'目标金额',
             align:"center",
@@ -163,11 +201,7 @@
             align:"center",
             dataIndex: 'raisedMoney'
           },
-          {
-            title:'项目类别',
-            align:"center",
-            dataIndex: 'category_dictText'
-          },
+          
           {
             title:'起赠金额',
             align:"center",
@@ -209,13 +243,15 @@
         let fieldList=[];
          fieldList.push({type:'string',value:'createBy',text:'创建人',dictCode:''})
          fieldList.push({type:'datetime',value:'createTime',text:'创建日期'})
+         fieldList.push({type:'string',value:'sysOrgCode',text:'所属部门',dictCode:'sys_depart,org_code,depart_name'})
          fieldList.push({type:'string',value:'name',text:'项目名称',dictCode:''})
          fieldList.push({type:'Text',value:'picture',text:'项目图片',dictCode:''})
+         fieldList.push({type:'string',value:'itemDesc',text:'项目简介',dictCode:''})
          fieldList.push({type:'Text',value:'detail',text:'项目详情',dictCode:''})
          fieldList.push({type:'Text',value:'story',text:'捐赠故事',dictCode:''})
          fieldList.push({type:'Text',value:'question',text:'常见问题',dictCode:''})
          fieldList.push({type:'string',value:'donationClass',text:'捐赠项目分类',dictCode:'donation_class,name,id'})
-         fieldList.push({type:'switch',value:'status',text:'项目状态'})
+         fieldList.push({type:'int',value:'status',text:'项目状态',dictCode:'donation_status'})
          fieldList.push({type:'string',value:'targetMoney',text:'目标金额',dictCode:''})
          fieldList.push({type:'string',value:'raisedMoney',text:'已筹金额',dictCode:''})
          fieldList.push({type:'int',value:'category',text:'项目类别',dictCode:'donation_category'})
