@@ -1,6 +1,5 @@
 import api from './index'
 import { axios } from '@/utils/request'
-
 /**
  * login func
  * parameter: {
@@ -75,8 +74,8 @@ export function thirdLogin(token,thirdType) {
 
 /**
  * 强退其他账号
- * @param token
  * @returns {*}
+ * @param parameter
  */
 export function forceLogout(parameter) {
   return axios({
