@@ -15,18 +15,26 @@
             </a-form-model-item>
           </a-col>
           <a-col :span="24" >
+            <a-form-model-item label="项目简介" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="itemDesc">
+              <a-input v-model="model.itemDesc" placeholder="请输入项目简介" ></a-input>
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="24" >
             <a-form-model-item label="项目详情" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="detail">
-              <j-editor v-model="model.detail" />
+              <j-editor v-if="formDisabled==false" v-model="model.detail" />
+              <div v-if="formDisabled==true" v-html="model.detail"></div>
             </a-form-model-item>
           </a-col>
           <a-col :span="24" >
             <a-form-model-item label="捐赠故事" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="story">
-              <j-editor v-model="model.story" />
+              <j-editor v-if="formDisabled==false" v-model="model.story" />
+              <div v-if="formDisabled==true" v-html="model.story"></div>
             </a-form-model-item>
           </a-col>
           <a-col :span="24" >
             <a-form-model-item label="常见问题" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="question">
-              <j-editor v-model="model.question" />
+              <j-editor v-if="formDisabled==false" v-model="model.question" />
+              <div v-if="formDisabled==true" v-html="model.question"></div>
             </a-form-model-item>
           </a-col>
           <a-col :span="24" >
@@ -34,29 +42,29 @@
               <j-dict-select-tag type="list" v-model="model.donationClass" dictCode="donation_class,name,id" placeholder="请选择捐赠项目分类" />
             </a-form-model-item>
           </a-col>
-          <!-- <a-col :span="24" >
-            <a-form-model-item label="项目状态" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="status">
-              <j-switch v-model="model.status"  ></j-switch>
+          <a-col :span="24" >
+            <a-form-model-item v-if="roleId.indexOf('1465163864583323650') == -1" label="所属单位" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="donationClass">
+              <j-dict-select-tag type="list" v-model="model.sysOrgCode" dictCode="sys_depart,depart_name,org_code" placeholder="请选择项目所属部门" />
             </a-form-model-item>
-          </a-col> -->
+          </a-col>
           <a-col :span="24" >
             <a-form-model-item label="目标金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="targetMoney">
               <a-input v-model="model.targetMoney" placeholder="请输入目标金额" ></a-input>
             </a-form-model-item>
           </a-col>
-          <a-col :span="24" >
+          <!-- <a-col :span="24" >
             <a-form-model-item label="已筹金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="raisedMoney">
               <a-input v-model="model.raisedMoney" placeholder="请输入已筹金额" ></a-input>
             </a-form-model-item>
-          </a-col>
-          <a-col :span="24" >
-            <a-form-model-item label="项目类别" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="category">
-              <j-dict-select-tag type="list" v-model="model.category" dictCode="donation_category" placeholder="请选择项目类别" />
-            </a-form-model-item>
-          </a-col>
+          </a-col> -->
           <a-col :span="24" >
             <a-form-model-item label="起赠金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="leastMoney">
               <a-input v-model="model.leastMoney" placeholder="请输入起赠金额" ></a-input>
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="24">
+            <a-form-model-item label="附件上传" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="fileList">
+              <j-upload v-model="model.file"></j-upload>
             </a-form-model-item>
           </a-col>
         </a-row>
@@ -86,6 +94,7 @@
   import { FormTypes,getRefPromise,VALIDATE_NO_PASSED } from '@/utils/JEditableTableUtil'
   import { JEditableTableModelMixin } from '@/mixins/JEditableTableModelMixin'
   import { validateDuplicateValue } from '@/utils/util'
+  import { mapActions, mapGetters,mapState } from 'vuex'
 
   export default {
     name: 'DonationItemForm',
@@ -94,6 +103,7 @@
     },
     data() {
       return {
+        roleId: [],
         labelCol: {
           xs: { span: 24 },
           sm: { span: 6 },
@@ -178,8 +188,11 @@
       },
     },
     created () {
+      console.log(this.userInfo())
+      this.roleId = this.userInfo().roleId
     },
     methods: {
+      ...mapGetters(["userInfo"]),
       addBefore(){
         this.donationOptionTable.dataSource=[]
       },
@@ -195,6 +208,12 @@
         if (this.model.id) {
           let params = { id: this.model.id }
           this.requestSubTableData(this.url.donationOption.list, params, this.donationOptionTable)
+          getAction(this.url.queryById,params).then(res => {
+              if(res.success){
+                this.model = res.result
+                // console.log(model)
+              }
+          })
         }
       },
       //校验所有一对一子表表单
