@@ -8,7 +8,7 @@
       </a-form>
     </div>
     <!-- 查询区域-END -->
-    
+
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
@@ -140,8 +140,7 @@
           {
             title:'项目状态',
             align:"center",
-            dataIndex: 'status',
-            customRender: (text) => (!text ? "" : (text == "Y" ? "是" : "否"))
+            dataIndex: 'status_dictText',
           },
           {
             title:'项目类别',
@@ -184,7 +183,7 @@
           deleteBatch: "/protocolItem/protocolItem/deleteBatch",
           exportXlsUrl: "/protocolItem/protocolItem/exportXls",
           importExcelUrl: "protocolItem/protocolItem/importExcel",
-          
+
         },
         dictOptions:{},
         superFieldList:[],
