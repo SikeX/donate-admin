@@ -38,6 +38,12 @@
             </a-form-model-item>
           </a-col>
           <a-col :span="24" >
+            <a-form-model-item label="支出情况" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="cost">
+              <j-editor v-if="formDisabled==false" v-model="model.cost" />
+              <div v-if="formDisabled==true" v-html="model.cost"></div>
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="24" >
             <a-form-model-item label="协议项目分类" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="protocolClass">
               <j-dict-select-tag type="list" v-model="model.protocolClass" dictCode="protocol_class,name,id" placeholder="请选择协议项目分类" />
             </a-form-model-item>
