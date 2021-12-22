@@ -83,6 +83,12 @@
               <j-date placeholder="请选择项目到账时间" v-model="model.getTime" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" />
             </a-form-model-item>
           </a-col>
+          <a-col :span="24" >
+            <a-form-model-item label="项目结束时间" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="endTime">
+              <j-date placeholder="请选择项目结束时间" v-model="model.endTime" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%" />
+            </a-form-model-item>
+          </a-col>
+
         </a-row>
       </a-form-model>
     </j-form-container>

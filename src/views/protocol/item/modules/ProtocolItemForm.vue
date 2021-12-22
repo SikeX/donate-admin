@@ -39,11 +39,11 @@
               <j-dict-select-tag type="list" v-model="model.protocolClass" dictCode="protocol_class,name,id" placeholder="请选择协议项目分类" />
             </a-form-model-item>
           </a-col>
-          <a-col :span="24">
+<!--          <a-col :span="24">
             <a-form-model-item label="项目状态" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="status">
               <a-input-number v-model="model.status" placeholder="请输入项目状态" style="width: 100%" />
             </a-form-model-item>
-          </a-col>
+          </a-col>-->
           <a-col :span="24">
             <a-form-model-item label="所属部门" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="sysOrgCode">
               <a-input v-model="model.sysOrgCode" placeholder="请输入所属部门"  ></a-input>
@@ -54,11 +54,11 @@
               <a-input v-model="model.protocolItemDesc" placeholder="请输入协议项目描述"  ></a-input>
             </a-form-model-item>
           </a-col>
-          <a-col :span="24" >
+<!--          <a-col :span="24" >
             <a-form-model-item label="项目类别" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="category">
               <j-dict-select-tag type="list" v-model="model.category" dictCode="donation_category" placeholder="请选择项目类别" />
             </a-form-model-item>
-          </a-col>
+          </a-col>-->
           <a-col :span="24" >
             <a-form-model-item label="上传附件" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="description">
               <j-upload v-model="model.description"  ></j-upload>

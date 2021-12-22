@@ -9,18 +9,18 @@
               <j-dict-select-tag placeholder="请选择协议项目分类" v-model="queryParam.protocolClass" dictCode="protocol_class,name,id"/>
             </a-form-item>
           </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="项目状态">
-              <j-dict-select-tag placeholder="请选择项目状态" v-model="queryParam.status" dictCode="protocol_status"/>
+         <a-col :xl="6" :lg="7" :md="8" :sm="24">
+            <a-form-item label="项目名称">
+              <a-input placeholder="请选择项目名称" v-model="queryParam.name" />
             </a-form-item>
           </a-col>
-          <template v-if="toggleSearchStatus">
+<!--          <template v-if="toggleSearchStatus">
             <a-col :xl="6" :lg="7" :md="8" :sm="24">
               <a-form-item label="项目类别">
                 <j-dict-select-tag placeholder="请选择项目类别" v-model="queryParam.category" dictCode="donation_category"/>
               </a-form-item>
             </a-col>
-          </template>
+          </template>-->
           <a-col :xl="6" :lg="7" :md="8" :sm="24">
             <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
@@ -38,7 +38,7 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus">新增协议项目</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('协议项目')">导出</a-button>
 <!--      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
         <a-button type="primary" icon="import">导入</a-button>
@@ -55,10 +55,10 @@
 
     <!-- table区域-begin -->
     <div>
-      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
+<!--      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
         <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
         <a style="margin-left: 24px" @click="onClearSelected">清空</a>
-      </div>
+      </div>-->
 
       <a-table
         ref="table"
@@ -95,7 +95,7 @@
         </template>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
+          <a @click="handleEdit(record)">变更协议项目</a>
 
           <a-divider type="vertical" />
           <a-dropdown>
@@ -167,11 +167,11 @@
             align:"center",
             dataIndex: 'status_dictText'
           },*/
-          {
+          /*{
             title:'项目类别',
             align:"center",
             dataIndex: 'category_dictText'
-          },
+          },*/
           {
             title:'创建人',
             align:"center",
@@ -213,6 +213,11 @@
             title:'项目到账时间',
             align:"center",
             dataIndex: 'getTime'
+          },
+          {
+            title:'项目结束时间',
+            align:"center",
+            dataIndex: 'endTime'
           },
           {
             title: '操作',

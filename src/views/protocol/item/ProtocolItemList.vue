@@ -137,7 +137,7 @@
             align:"center",
             dataIndex: 'protocolClass_dictText'
           },
-          {
+          /*{
             title:'项目状态',
             align:"center",
             dataIndex: 'status_dictText',
@@ -146,7 +146,7 @@
             title:'项目类别',
             align:"center",
             dataIndex: 'category_dictText'
-          },
+          },*/
           {
             title:'上传附件',
             align:"center",
