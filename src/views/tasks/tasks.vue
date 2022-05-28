@@ -147,11 +147,11 @@
             align:"center",
             dataIndex: 'sysOrgCode_dictText'
           },
-          {
-            title:'单位类型',
-            align:"center",
-            dataIndex: 'departType'
-          },
+          // {
+          //   title:'单位类型',
+          //   align:"center",
+          //   dataIndex: 'departType'
+          // },
           {
             title:'填报人',
             align:"center",

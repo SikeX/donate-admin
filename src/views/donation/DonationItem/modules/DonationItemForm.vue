@@ -43,7 +43,7 @@
             </a-form-model-item>
           </a-col>
           <a-col :span="24" >
-            <a-form-model-item v-if="roleId.indexOf('1465163864583323650') == -1" label="所属单位" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="donationClass">
+            <a-form-model-item v-if="roleId.indexOf('1473252071969705985') != -1" label="所属单位" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="donationClass">
               <j-dict-select-tag type="list" v-model="model.sysOrgCode" dictCode="sys_depart,depart_name,org_code" placeholder="请选择项目所属部门" />
             </a-form-model-item>
           </a-col>
@@ -60,6 +60,11 @@
           <a-col :span="24" >
             <a-form-model-item label="起赠金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="leastMoney">
               <a-input v-model="model.leastMoney" placeholder="请输入起赠金额" ></a-input>
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="24" >
+            <a-form-model-item label="结束时间" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="endTime">
+              <j-date v-model="model.endTime" :showTime="true" dateFormat="YYYY-MM-DD HH:mm:ss"/>
             </a-form-model-item>
           </a-col>
           <a-col :span="24">

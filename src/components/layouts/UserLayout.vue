@@ -9,7 +9,7 @@
           </a>
         </div>
         <div class="desc">
-          loading
+          哈尔滨工程大学捐赠平台
         </div>
       </div>
 
@@ -17,12 +17,13 @@
 
       <div class="footer">
         <div class="links">
-          <a href="http://doc.jeecg.com" target="_blank">帮助</a>
+          <!-- <a href="http://doc.jeecg.com" target="_blank">帮助</a>
           <a href="https://github.com/zhangdaiscott/jeecg-boot" target="_blank">隐私</a>
-          <a href="https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE" target="_blank">条款</a>
+          <a href="https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE" target="_blank">条款</a> -->
         </div>
         <div class="copyright">
-          Copyright &copy; 2019 <a href="http://www.jeecg.com" target="_blank">JEECG开源社区</a> 出品
+          Copyright &copy; 2021 哈尔滨工程大学捐赠平台
+          <!-- <a href="http://www.jeecg.com" target="_blank">JEECG开源社区</a> 出品 -->
         </div>
       </div>
     </div>
