@@ -278,7 +278,6 @@ export default {
       fieldList.push({ type: 'string', value: 'phone', text: '电话', dictCode: '' })
       fieldList.push({ type: 'string', value: 'isSchoolmate', text: '是否校友', dictCode: '' })
       fieldList.push({ type: 'string', value: 'donationMsg', text: '捐赠留言', dictCode: '' })
-      fieldList.push({ type: 'int', value: 'delFlag', text: '删除状态', dictCode: '' })
       this.superFieldList = fieldList
     },
   },

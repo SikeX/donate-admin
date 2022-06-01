@@ -10,7 +10,9 @@ const queryall = (params)=>getAction("/sys/role/queryall",params);
 
 //用户管理
 const addUser = (params)=>postAction("/sys/user/add",params);
+const addOnlineUser = (params)=>postAction("/onlineUser/user/add",params);
 const editUser = (params)=>putAction("/sys/user/edit",params);
+const editOnlineUser = (params)=>postAction("/onlineUser/user/edit",params);
 const queryUserRole = (params)=>getAction("/sys/user/queryUserRole",params);
 const getUserList = (params)=>getAction("/sys/user/list",params);
 const frozenBatch = (params)=>putAction("/sys/user/frozenBatch",params);
@@ -157,7 +159,9 @@ export {
   saveDeptRolePermission,
   queryMyDepartTreeList,
   getUserNoticeInfo,
-  getDictItemsFromCache
+  getDictItemsFromCache,
+  addOnlineUser,
+  editOnlineUser
 }
 
 

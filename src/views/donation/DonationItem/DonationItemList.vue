@@ -108,22 +108,12 @@
         </template>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
+          <a v-if="roleId.indexOf('1473252071969705985') != -1" @click="handleEdit(record)">编辑</a>
 
           <a-divider type="vertical" />
-          <a-dropdown>
-            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a @click="handleDetail(record)">详情</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+          <a @click="handleDetail(record)">详情</a>
+          <!-- <a-divider type="vertical" /> -->
+          <!-- <a @click="handleDetail(record)">捐赠明细</a> -->
         </span>
       </a-table>
     </div>
@@ -136,6 +126,7 @@
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 import DonationItemModal from './modules/DonationItemModal'
 import { filterMultiDictText } from '@/components/dict/JDictSelectUtil'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import '@/assets/less/TableExpand.less'
 
 export default {
@@ -239,6 +230,7 @@ export default {
     }
   },
   created() {
+    this.roleId = this.userInfo().roleId
     this.getSuperFieldList()
   },
   computed: {
@@ -247,6 +239,7 @@ export default {
     },
   },
   methods: {
+    ...mapGetters(['userInfo']),
     initDictConfig() {},
     getSuperFieldList() {
       let fieldList = []

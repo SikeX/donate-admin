@@ -93,11 +93,6 @@
               <a-input v-model="model.donationMsg" placeholder="请输入捐赠留言"></a-input>
             </a-form-model-item>
           </a-col>
-          <a-col :span="24">
-            <a-form-model-item label="删除状态" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="delFlag">
-              <a-input-number v-model="model.delFlag" placeholder="请输入删除状态" style="width: 100%" />
-            </a-form-model-item>
-          </a-col>
         </a-row>
       </a-form-model>
     </j-form-container>
