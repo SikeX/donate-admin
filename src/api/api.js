@@ -20,6 +20,7 @@ const frozenBatch = (params)=>putAction("/sys/user/frozenBatch",params);
 const checkOnlyUser = (params)=>getAction("/sys/user/checkOnlyUser",params);
 //改变密码
 const changePassword = (params)=>putAction("/sys/user/changePassword",params);
+const changeOnlinePassword = (params)=>putAction("/onlineUser/user/changePassword",params);
 
 //权限管理
 const addPermission= (params)=>postAction("/sys/permission/add",params);
@@ -161,7 +162,8 @@ export {
   getUserNoticeInfo,
   getDictItemsFromCache,
   addOnlineUser,
-  editOnlineUser
+  editOnlineUser,
+  changeOnlinePassword
 }
 
 

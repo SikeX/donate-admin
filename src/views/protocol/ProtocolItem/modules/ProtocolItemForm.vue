@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import { getAction } from '@/api/manage'
+import { httpAction, getAction } from '@/api/manage'
 import { FormTypes, getRefPromise, VALIDATE_NO_PASSED } from '@/utils/JEditableTableUtil'
 import { JEditableTableModelMixin } from '@/mixins/JEditableTableModelMixin'
 import { validateDuplicateValue } from '@/utils/util'
@@ -229,55 +229,42 @@ export default {
   },
   methods: {
     ...mapGetters(['userInfo']),
-    addBefore() {
-      this.protocolOptionTable.dataSource = []
+    add() {
+      this.edit(this.modelDefault)
     },
-    getAllTable() {
-      let values = this.tableKeys.map((key) => getRefPromise(this, key))
-      return Promise.all(values)
+    edit(record) {
+      this.model = Object.assign({}, record)
+      this.visible = true
     },
-    /** 调用完edit()方法之后会自动调用此方法 */
-    editAfter() {
-      this.$nextTick(() => {})
-      // 加载子表数据
-      if (this.model.id) {
-        let params = { id: this.model.id }
-        this.requestSubTableData(this.url.protocolOption.list, params, this.protocolOptionTable)
-        getAction(this.url.queryById, params).then((res) => {
-          if (res.success) {
-            this.model = res.result
-            // console.log(model)
+    submitForm() {
+      const that = this
+      // 触发表单验证
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          that.confirmLoading = true
+          let httpurl = ''
+          let method = ''
+          if (!this.model.id) {
+            httpurl += this.url.add
+            method = 'post'
+          } else {
+            httpurl += this.url.edit
+            method = 'put'
           }
-        })
-      }
-    },
-    //校验所有一对一子表表单
-    validateSubForm(allValues) {
-      return new Promise((resolve, reject) => {
-        Promise.all([])
-          .then(() => {
-            resolve(allValues)
-          })
-          .catch((e) => {
-            if (e.error === VALIDATE_NO_PASSED) {
-              // 如果有未通过表单验证的子表，就自动跳转到它所在的tab
-              this.activeKey = e.index == null ? this.activeKey : this.refKeys[e.index]
-            } else {
-              console.error(e)
-            }
-          })
+          httpAction(httpurl, this.model, method)
+            .then((res) => {
+              if (res.success) {
+                that.$message.success(res.message)
+                that.$emit('ok')
+              } else {
+                that.$message.warning(res.message)
+              }
+            })
+            .finally(() => {
+              that.confirmLoading = false
+            })
+        }
       })
-    },
-    /** 整理成formData */
-    classifyIntoFormData(allValues) {
-      let main = Object.assign(this.model, allValues.formValue)
-      return {
-        ...main, // 展开
-        protocolOptionList: allValues.tablesValue[0].values,
-      }
-    },
-    validateError(msg) {
-      this.$message.error(msg)
     },
   },
 }
