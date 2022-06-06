@@ -3,43 +3,7 @@
     <!-- 查询区域 -->
     <div class="table-page-search-wrapper">
       <a-form layout="inline" @keyup.enter.native="searchQuery">
-        <a-row :gutter="24">
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="捐赠项目分类">
-              <j-dict-select-tag
-                placeholder="请选择捐赠项目分类"
-                v-model="queryParam.donationClass"
-                dictCode="donation_class,name,id"
-              />
-            </a-form-item>
-          </a-col>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <a-form-item label="项目状态">
-              <j-dict-select-tag placeholder="请选择项目状态" v-model="queryParam.status" dictCode="donation_status" />
-            </a-form-item>
-          </a-col>
-          <template v-if="toggleSearchStatus">
-            <a-col :xl="6" :lg="7" :md="8" :sm="24">
-              <a-form-item label="项目类别">
-                <j-dict-select-tag
-                  placeholder="请选择项目类别"
-                  v-model="queryParam.category"
-                  dictCode="donation_category"
-                />
-              </a-form-item>
-            </a-col>
-          </template>
-          <a-col :xl="6" :lg="7" :md="8" :sm="24">
-            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
-              <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
-              <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
-              <a @click="handleToggleSearch" style="margin-left: 8px">
-                {{ toggleSearchStatus ? '收起' : '展开' }}
-                <a-icon :type="toggleSearchStatus ? 'up' : 'down'" />
-              </a>
-            </span>
-          </a-col>
-        </a-row>
+        <a-row :gutter="24"> </a-row>
       </a-form>
     </div>
     <!-- 查询区域-END -->
@@ -47,22 +11,23 @@
     <!-- 操作按钮区域 -->
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <!-- <a-button type="primary" icon="download" @click="handleExportXls('捐赠项目')">导出</a-button> -->
-      <!-- <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
+      <a-button type="primary" icon="download" @click="handleExportXls('donation_item')">导出</a-button>
+      <a-upload
+        name="file"
+        :showUploadList="false"
+        :multiple="false"
+        :headers="tokenHeader"
+        :action="importExcelUrl"
+        @change="handleImportExcel"
+      >
         <a-button type="primary" icon="import">导入</a-button>
-      </a-upload> -->
+      </a-upload>
       <!-- 高级查询区域 -->
       <j-super-query
         :fieldList="superFieldList"
         ref="superQueryModal"
         @handleSuperQuery="handleSuperQuery"
       ></j-super-query>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel"><a-icon type="delete" />删除</a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>
-      </a-dropdown>
     </div>
 
     <!-- table区域-begin -->
@@ -85,6 +50,8 @@
         :dataSource="dataSource"
         :pagination="ipagination"
         :loading="loading"
+        :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange, type: 'radio' }"
+        :customRow="clickThenSelect"
         @change="handleTableChange"
       >
         <template slot="htmlSlot" slot-scope="text">
@@ -108,37 +75,38 @@
         </template>
 
         <span slot="action" slot-scope="text, record">
-          <a v-if="roleId.indexOf('1473252071969705985') != -1" @click="handleEdit(record)">编辑</a>
-
-          <a-divider type="vertical" />
-          <a @click="handleDetail(record)">详情</a>
-          <!-- <a-divider type="vertical" /> -->
-          <!-- <a @click="handleDetail(record)">捐赠明细</a> -->
+          <a @click="handleDetail(record)">查看</a>
         </span>
       </a-table>
     </div>
 
-    <donation-item-modal ref="modalForm" @ok="modalFormOk" />
+    <a-tabs defaultActiveKey="1">
+      <a-tab-pane tab="项目报销" key="1">
+        <DonationReimburseList :mainId="selectedMainId" />
+      </a-tab-pane>
+    </a-tabs>
+
+    <donationItem-modal ref="modalForm" @ok="modalFormOk"></donationItem-modal>
   </a-card>
 </template>
 
 <script>
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
-import DonationItemModal from './modules/DonationItemModal'
-import { filterMultiDictText } from '@/components/dict/JDictSelectUtil'
-import { mapActions, mapGetters, mapState } from 'vuex'
+import DonationItemModal from '../donation/DonationItem/modules/DonationItemModal'
+import { getAction } from '@/api/manage'
+import DonationReimburseList from './DonationReimburseList'
 import '@/assets/less/TableExpand.less'
 
 export default {
   name: 'DonationItemList',
   mixins: [JeecgListMixin],
   components: {
+    DonationReimburseList,
     DonationItemModal,
   },
   data() {
     return {
-      description: '捐赠项目管理页面',
-      roleId: [],
+      description: 'donation_item管理页面',
       // 表头
       columns: [
         {
@@ -172,16 +140,6 @@ export default {
           dataIndex: 'category_dictText',
         },
         {
-          title: '目标金额',
-          align: 'center',
-          dataIndex: 'targetMoney',
-        },
-        {
-          title: '已筹金额',
-          align: 'center',
-          dataIndex: 'raisedMoney',
-        },
-        {
           title: '创建人',
           align: 'center',
           dataIndex: 'createBy',
@@ -202,6 +160,18 @@ export default {
           dataIndex: 'picture',
           scopedSlots: { customRender: 'imgSlot' },
         },
+
+        {
+          title: '目标金额',
+          align: 'center',
+          dataIndex: 'targetMoney',
+        },
+        {
+          title: '已筹金额',
+          align: 'center',
+          dataIndex: 'raisedMoney',
+        },
+
         {
           title: '起赠金额',
           align: 'center',
@@ -217,18 +187,30 @@ export default {
         },
       ],
       url: {
-        list: '/donationItem/donationItem/list',
+        list: '/donationItem/donationItem/listVerified',
         delete: '/donationItem/donationItem/delete',
         deleteBatch: '/donationItem/donationItem/deleteBatch',
         exportXlsUrl: '/donationItem/donationItem/exportXls',
         importExcelUrl: 'donationItem/donationItem/importExcel',
       },
       dictOptions: {},
+      /* 分页参数 */
+      ipagination: {
+        current: 1,
+        pageSize: 5,
+        pageSizeOptions: ['5', '10', '50'],
+        showTotal: (total, range) => {
+          return range[0] + '-' + range[1] + ' 共' + total + '条'
+        },
+        showQuickJumper: true,
+        showSizeChanger: true,
+        total: 0,
+      },
+      selectedMainId: '',
       superFieldList: [],
     }
   },
   created() {
-    this.roleId = this.userInfo().roleId
     this.getSuperFieldList()
   },
   computed: {
@@ -237,35 +219,66 @@ export default {
     },
   },
   methods: {
-    ...mapGetters(['userInfo']),
     initDictConfig() {},
+    clickThenSelect(record) {
+      return {
+        on: {
+          click: () => {
+            this.onSelectChange(record.id.split(','), [record])
+          },
+        },
+      }
+    },
+    onClearSelected() {
+      this.selectedRowKeys = []
+      this.selectionRows = []
+      this.selectedMainId = ''
+    },
+    onSelectChange(selectedRowKeys, selectionRows) {
+      this.selectedMainId = selectedRowKeys[0]
+      this.selectedRowKeys = selectedRowKeys
+      this.selectionRows = selectionRows
+    },
+    loadData(arg) {
+      if (!this.url.list) {
+        this.$message.error('请设置url.list属性!')
+        return
+      }
+      //加载数据 若传入参数1则加载第一页的内容
+      if (arg === 1) {
+        this.ipagination.current = 1
+      }
+      this.onClearSelected()
+      var params = this.getQueryParams() //查询条件
+      this.loading = true
+      getAction(this.url.list, params).then((res) => {
+        if (res.success) {
+          this.dataSource = res.result.records
+          this.ipagination.total = res.result.total
+        }
+        if (res.code === 510) {
+          this.$message.warning(res.message)
+        }
+        this.loading = false
+      })
+    },
     getSuperFieldList() {
       let fieldList = []
-      fieldList.push({ type: 'string', value: 'createBy', text: '创建人', dictCode: '' })
-      fieldList.push({ type: 'datetime', value: 'createTime', text: '创建日期' })
-      fieldList.push({
-        type: 'string',
-        value: 'sysOrgCode',
-        text: '所属部门',
-        dictCode: 'sys_depart,org_code,depart_name',
-      })
       fieldList.push({ type: 'string', value: 'name', text: '项目名称', dictCode: '' })
       fieldList.push({ type: 'Text', value: 'picture', text: '项目图片', dictCode: '' })
-      fieldList.push({ type: 'string', value: 'itemDesc', text: '项目简介', dictCode: '' })
+      fieldList.push({ type: 'Text', value: 'itemDesc', text: '项目简介', dictCode: '' })
       fieldList.push({ type: 'Text', value: 'detail', text: '项目详情', dictCode: '' })
       fieldList.push({ type: 'Text', value: 'story', text: '捐赠故事', dictCode: '' })
       fieldList.push({ type: 'Text', value: 'question', text: '常见问题', dictCode: '' })
-      fieldList.push({
-        type: 'string',
-        value: 'donationClass',
-        text: '捐赠项目分类',
-        dictCode: 'donation_class,name,id',
-      })
-      fieldList.push({ type: 'int', value: 'status', text: '项目状态', dictCode: 'donation_status' })
+      fieldList.push({ type: 'string', value: 'donationClass', text: '捐赠项目分类', dictCode: '' })
+      fieldList.push({ type: 'int', value: 'delFlag', text: '删除状态', dictCode: '' })
+      fieldList.push({ type: 'int', value: 'status', text: '项目状态', dictCode: '' })
       fieldList.push({ type: 'string', value: 'targetMoney', text: '目标金额', dictCode: '' })
       fieldList.push({ type: 'string', value: 'raisedMoney', text: '已筹金额', dictCode: '' })
-      fieldList.push({ type: 'int', value: 'category', text: '项目类别', dictCode: 'donation_category' })
+      fieldList.push({ type: 'int', value: 'category', text: '项目类别', dictCode: '' })
       fieldList.push({ type: 'string', value: 'leastMoney', text: '起赠金额', dictCode: '' })
+      fieldList.push({ type: 'Text', value: 'file', text: '项目文件', dictCode: '' })
+      fieldList.push({ type: 'date', value: 'endTime', text: '结束时间' })
       this.superFieldList = fieldList
     },
   },

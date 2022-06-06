@@ -13,6 +13,7 @@
     <!-- <test-verify-form v-if="type==='婚前报备'" ref="realForm" :disabled="disableSubmit" /> -->
     <!-- <test v-if="type==='婚前报备'" ref="realForm" :disabled="disableSubmit" /> -->
     <donation-item-form v-if="type === '捐赠'" ref="realForm" :disabled="disableSubmit" />
+    <donation-reimburse-form v-if="type === '报销'" ref="realForm" :disabled="disableSubmit" />
 
     <!-- <h3 :style="{ padding: '24px', background: '#9cdcfe', textAlign: 'center' }" >审核区域</h3> -->
 
@@ -23,13 +24,20 @@
             <a-list-item-meta>
               <a slot="title">审核信息</a>
               <div slot="description">
-                <div><span>审核人：</span><span>{{item.auditPerson}}</span></div>
-                <div><span>审核时间：</span><span>{{item.auditTime}}</span></div>
-                <div><span>审核结论：</span>
-                <span v-if="item.auditStatus==3" >通过</span>
-                <span v-if="item.auditStatus==4" >驳回</span>
+                <div>
+                  <span>审核人：</span><span>{{ item.auditPerson }}</span>
                 </div>
-                <div><span>审核意见：</span><span>{{item.remark}}</span></div>
+                <div>
+                  <span>审核时间：</span><span>{{ item.auditTime }}</span>
+                </div>
+                <div>
+                  <span>审核结论：</span>
+                  <span v-if="item.auditStatus == 3">通过</span>
+                  <span v-if="item.auditStatus == 4">驳回</span>
+                </div>
+                <div>
+                  <span>审核意见：</span><span>{{ item.remark }}</span>
+                </div>
               </div>
             </a-list-item-meta>
           </a-list-item>
@@ -54,7 +62,7 @@ import { getAction } from '@/api/manage'
 import TasksForm from './TasksForm'
 import SplitPanel from '../../jeecg/SplitPanel.vue'
 import DonationItemForm from '../../donation/DonationItem/modules/DonationItemForm.vue'
-
+import DonationReimburseForm from '../../donationReimburse/modules/DonationReimburseForm.vue'
 
 export default {
   name: 'TaskModal',
@@ -62,9 +70,10 @@ export default {
     getAction,
     TasksForm,
     SplitPanel,
-    DonationItemForm
+    DonationItemForm,
+    DonationReimburseForm,
   },
-  mounted(){
+  mounted() {
     this.getVerigyResult()
   },
   data() {
@@ -97,9 +106,6 @@ export default {
   },
   created() {
     this.getVerigyResult()
-  },
-  beforeCreate() {
-    console.log(record)
   },
   methods: {
     add() {
@@ -134,7 +140,7 @@ export default {
       }
       getAction('/smartVerifyDetail/smartVerifyDetail/queryByflowNo', params).then((res) => {
         if (res.success) {
-          this.$nextTick(()=>{
+          this.$nextTick(() => {
             console.log(res.result)
             this.verifyResult = res.result
             console.log(this.verifyResult)

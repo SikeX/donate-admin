@@ -4,23 +4,22 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
+          <a-col :md="6" :sm="8">
+            <a-form-item label="任务类型">
+              <a-input placeholder="" v-model="queryParam.taskType"></a-input>
+            </a-form-item>
+          </a-col>
 
-        <a-col :md="6" :sm="8">
-          <a-form-item label="任务类型">
-            <a-input placeholder="" v-model="queryParam.taskType"></a-input>
-          </a-form-item>
-        </a-col>
-
-        <a-col :md="6" :sm="8">
-            <span style="float: left;overflow: hidden;" class="table-page-search-submitButtons">
+          <a-col :md="6" :sm="8">
+            <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
               <a-button type="primary" @click="searchQuery" icon="search">查询</a-button>
               <a-button type="primary" @click="searchReset" icon="reload" style="margin-left: 8px">重置</a-button>
               <a @click="handleToggleSearch" style="margin-left: 8px">
                 {{ toggleSearchStatus ? '收起' : '展开' }}
-                <a-icon :type="toggleSearchStatus ? 'up' : 'down'"/>
+                <a-icon :type="toggleSearchStatus ? 'up' : 'down'" />
               </a>
             </span>
-        </a-col>
+          </a-col>
         </a-row>
       </a-form>
     </div>
@@ -98,7 +97,7 @@
         </template>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="aa(record)">详情</a>
+          <a @click="check(record)">详情</a>
 
           <!-- <a @click="handleVerify(record)">审核</a> -->
 
@@ -138,7 +137,7 @@ export default {
   data() {
     return {
       description: '待审核任务列表',
-      queryParam:{},
+      queryParam: {},
       // 表头
       columns: [
         {
@@ -207,7 +206,7 @@ export default {
     }
   },
   methods: {
-    aa(record) {
+    check(record) {
       console.log(record.flowNo)
 
       this.handleDetail(record)
